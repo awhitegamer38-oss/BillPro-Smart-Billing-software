@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BillPro – Smart Billing Software</title>
+  <meta name="description" content="Professional billing and invoice software for retail shops. Create invoices, manage products and print receipts instantly." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ===== SIDEBAR ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M13 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-7-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <span class="logo-text">BillPro</span>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="nav-item active" onclick="showSection('dashboard')" id="nav-dashboard" title="Dashboard (Alt+D)">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="2"/></svg>
+      <span>Dashboard</span>
+      <kbd class="nav-kbd">D</kbd>
+    </button>
+    <button class="nav-item" onclick="showSection('new-invoice')" id="nav-new-invoice" title="New Invoice (Alt+N)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>New Invoice</span>
+      <kbd class="nav-kbd">N</kbd>
+    </button>
+    <button class="nav-item" onclick="showSection('invoices')" id="nav-invoices" title="All Invoices (Alt+I)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M13 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-7-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>All Invoices</span>
+      <kbd class="nav-kbd">I</kbd>
+    </button>
+    <button class="nav-item" onclick="showSection('products')" id="nav-products" title="Products (Alt+P)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Products</span>
+      <kbd class="nav-kbd">P</kbd>
+    </button>
+    <button class="nav-item" onclick="showSection('customers')" id="nav-customers" title="Customers (Alt+C)">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8zM23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Customers</span>
+      <kbd class="nav-kbd">C</kbd>
+    </button>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="shop-info">
+      <div class="shop-avatar">S</div>
+      <div>
+        <div class="shop-name" id="sidebar-shop-name">My Shop</div>
+        <div class="shop-sub">Owner</div>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ===== MAIN CONTENT ===== -->
+<div class="main-wrapper">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 12h18M3 6h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+      <h1 class="page-title" id="page-title">Dashboard</h1>
+    </div>
+    <div class="topbar-right">
+      <div class="date-badge" id="current-date"></div>
+      <button class="btn btn-primary" onclick="showSection('new-invoice')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        New Invoice
+      </button>
+    </div>
+  </header>
+
+  <main class="content">
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="section" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card" style="--accent:#7c3aed">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 12h6M9 16h6M13 4H6a2 2 0 00-2 2v14a2 2 0 002 2h12a2 2 0 002-2V9l-7-5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-label">Total Invoices</div>
+            <div class="stat-value" id="stat-total-inv">0</div>
+          </div>
+        </div>
+        <div class="stat-card" style="--accent:#059669">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value" id="stat-revenue">Rs.0</div>
+          </div>
+        </div>
+        <div class="stat-card" style="--accent:#d97706">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value" id="stat-customers">0</div>
+          </div>
+        </div>
+        <div class="stat-card" style="--accent:#dc2626">
+          <div class="stat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></div>
+          <div class="stat-info">
+            <div class="stat-label">Products Listed</div>
+            <div class="stat-value" id="stat-products">0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dashboard-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2>Recent Invoices</h2>
+            <button class="btn btn-ghost" onclick="showSection('invoices')">View All</button>
+          </div>
+          <div id="recent-invoices-list">
+            <div class="empty-state">
+              <div class="empty-icon">📄</div>
+              <p>Koi invoice nahi mili abhi tak</p>
+              <button class="btn btn-primary" onclick="showSection('new-invoice')">Pehla Invoice Banao</button>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h2>Quick Actions</h2><span class="preview-badge">Alt + Key</span></div>
+          <div class="quick-actions">
+            <button class="quick-action-btn" onclick="showSection('new-invoice')" title="New Invoice (Alt+N)">
+              <div class="qa-icon" style="background:linear-gradient(135deg,#7c3aed,#a855f7)">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+              </div>
+              <span>New Invoice</span>
+              <kbd class="qa-kbd">Alt+N</kbd>
+            </button>
+            <button class="quick-action-btn" onclick="openProductModal()" title="Add Product (Alt+P)">
+              <div class="qa-icon" style="background:linear-gradient(135deg,#059669,#10b981)">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+              </div>
+              <span>Add Product</span>
+              <kbd class="qa-kbd">Alt+P</kbd>
+            </button>
+            <button class="quick-action-btn" onclick="openCustomerModal()" title="Add Customer (Alt+C)">
+              <div class="qa-icon" style="background:linear-gradient(135deg,#d97706,#f59e0b)">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2M9 11a4 4 0 100-8 4 4 0 000 8z" stroke="white" stroke-width="2.5" stroke-linecap="round"/></svg>
+              </div>
+              <span>Add Customer</span>
+              <kbd class="qa-kbd">Alt+C</kbd>
+            </button>
+            <button class="quick-action-btn" onclick="openShopSettings()" title="Shop Settings (Alt+S)">
+              <div class="qa-icon" style="background:linear-gradient(135deg,#0891b2,#06b6d4)">
+                <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="white" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span>Shop Settings</span>
+              <kbd class="qa-kbd">Alt+S</kbd>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== SHORTCUT REFERENCE CARD ===== -->
+      <div class="card shortcuts-card">
+        <div class="card-header">
+          <h2>⌨️ Keyboard Shortcuts</h2>
+          <span class="preview-badge">Alt + Key press karein</span>
+        </div>
+        <div class="shortcuts-grid">
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>D</kbd></div>
+            <div class="shortcut-desc">Dashboard kholein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>N</kbd></div>
+            <div class="shortcut-desc">Naya Invoice banayein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>I</kbd></div>
+            <div class="shortcut-desc">Saari Invoices dekhein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>P</kbd></div>
+            <div class="shortcut-desc">Product add karein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>C</kbd></div>
+            <div class="shortcut-desc">Customer add karein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>S</kbd></div>
+            <div class="shortcut-desc">Shop Settings kholein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Alt</kbd><span>+</span><kbd>Enter</kbd></div>
+            <div class="shortcut-desc">Invoice save karein</div>
+          </div>
+          <div class="shortcut-item">
+            <div class="shortcut-keys"><kbd>Esc</kbd></div>
+            <div class="shortcut-desc">Modal/popup band karein</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== NEW INVOICE ===== -->
+    <section class="section hidden" id="section-new-invoice">
+      <div class="invoice-builder">
+        <div class="invoice-form-col">
+          <div class="card">
+            <div class="card-header"><h2>Invoice Details</h2></div>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>Customer Name *</label>
+                <input type="text" id="inv-customer" placeholder="Customer ka naam likhein" list="customer-datalist" />
+                <datalist id="customer-datalist"></datalist>
+              </div>
+              <div class="form-group">
+                <label>Customer Phone</label>
+                <input type="tel" id="inv-phone" placeholder="Mobile number" />
+              </div>
+              <div class="form-group">
+                <label>Invoice Date</label>
+                <input type="date" id="inv-date" />
+              </div>
+              <div class="form-group">
+                <label>Invoice #</label>
+                <input type="text" id="inv-number" readonly />
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header"><h2>Add Items</h2></div>
+            <div class="add-item-row">
+              <div class="form-group" style="flex:2">
+                <label>Product / Item</label>
+                <input type="text" id="item-name" placeholder="Product name ya search karein" list="product-datalist" oninput="autoFillPrice()" />
+                <datalist id="product-datalist"></datalist>
+              </div>
+              <div class="form-group">
+                <label>Qty</label>
+                <input type="number" id="item-qty" value="1" min="1" placeholder="1" />
+              </div>
+              <div class="form-group">
+                <label>Price (Rs.)</label>
+                <input type="number" id="item-price" placeholder="0.00" min="0" step="0.01" />
+              </div>
+              <button class="btn btn-primary add-item-btn" onclick="addItemToInvoice()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+                Add
+              </button>
+            </div>
+
+            <div class="items-table-wrap">
+              <table class="items-table">
+                <thead>
+                  <tr><th>#</th><th>Item</th><th>Qty</th><th>Price</th><th>Total</th><th></th></tr>
+                </thead>
+                <tbody id="items-tbody">
+                  <tr class="empty-row">
+                    <td colspan="6">
+                      <div class="empty-state-small"><span>Upar se items add karein</span></div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="invoice-totals">
+              <div class="total-row"><span>Subtotal</span><span id="subtotal">Rs.0.00</span></div>
+              <div class="total-row">
+                <span>Discount (%)</span>
+                <input type="number" id="discount" value="0" min="0" max="100" step="0.5" oninput="recalcTotals()" class="discount-input" />
+              </div>
+
+              <!-- ===== GST SECTION ===== -->
+              <div class="gst-panel">
+                <div class="gst-panel-header">
+                  <div class="gst-title">
+                    <svg viewBox="0 0 24 24" fill="none" width="15" height="15"><path d="M9 14l6-6M10.5 8.5a.5.5 0 110-1 .5.5 0 010 1zM13.5 15.5a.5.5 0 110-1 .5.5 0 010 1z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" stroke-width="2"/></svg>
+                    GST / Tax
+                  </div>
+                  <div class="gst-type-toggle">
+                    <button class="gst-type-btn active" id="gst-type-cgst" onclick="setGstType('cgst')" title="CGST + SGST (Same State)">CGST+SGST</button>
+                    <button class="gst-type-btn" id="gst-type-igst" onclick="setGstType('igst')" title="IGST (Different State)">IGST</button>
+                  </div>
+                </div>
+
+                <div class="gst-quick-rates">
+                  <span class="gst-rate-label">Quick Select:</span>
+                  <button class="gst-rate-btn active" onclick="setGstRate(0)" id="gst-btn-0">0%</button>
+                  <button class="gst-rate-btn" onclick="setGstRate(5)" id="gst-btn-5">5%</button>
+                  <button class="gst-rate-btn" onclick="setGstRate(12)" id="gst-btn-12">12%</button>
+                  <button class="gst-rate-btn" onclick="setGstRate(18)" id="gst-btn-18">18%</button>
+                  <button class="gst-rate-btn" onclick="setGstRate(28)" id="gst-btn-28">28%</button>
+                  <button class="gst-rate-btn" onclick="setGstRate('custom')" id="gst-btn-custom">Custom</button>
+                </div>
+
+                <div class="gst-custom-row hidden" id="gst-custom-row">
+                  <span>Custom GST (%)</span>
+                  <input type="number" id="gst" value="0" min="0" max="100" step="0.5" oninput="recalcTotals()" class="discount-input" placeholder="0" />
+                </div>
+
+                <div class="gst-breakdown" id="gst-breakdown" style="display:none">
+                  <div class="total-row gst-sub-row">
+                    <span id="gst-label-left">CGST (9%)</span>
+                    <span id="gst-amt-left">Rs.0.00</span>
+                  </div>
+                  <div class="total-row gst-sub-row">
+                    <span id="gst-label-right">SGST (9%)</span>
+                    <span id="gst-amt-right">Rs.0.00</span>
+                  </div>
+                </div>
+              </div>
+              <!-- ===== END GST ===== -->
+
+              <div class="total-row grand">
+                <span>Grand Total</span>
+                <span id="grand-total">Rs.0.00</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Notes (optional)</label>
+              <textarea id="inv-notes" rows="2" placeholder="Koi note ya shukriya likhein..."></textarea>
+            </div>
+
+            <div class="invoice-actions">
+              <button class="btn btn-ghost" onclick="clearInvoice()">Clear</button>
+              <button class="btn btn-secondary" onclick="saveInvoice()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z" stroke="currentColor" stroke-width="2"/><path d="M17 21v-8H7v8M7 3v5h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Save Invoice
+              </button>
+              <button class="btn btn-primary" onclick="saveAndPrint()">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                Save and Print
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- LIVE PREVIEW -->
+        <div class="invoice-preview-col">
+          <div class="card preview-card">
+            <div class="card-header">
+              <h2>Live Preview</h2>
+              <span class="preview-badge">Real-time</span>
+            </div>
+            <div id="invoice-preview"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== ALL INVOICES ===== -->
+    <section class="section hidden" id="section-invoices">
+      <div class="card">
+        <div class="card-header">
+          <h2>All Invoices</h2>
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/><path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <input type="text" id="invoice-search" placeholder="Search invoice..." oninput="renderInvoiceList()" />
+          </div>
+        </div>
+        <div id="invoice-list-container">
+          <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <p>Koi invoice save nahi ki gayi abhi tak</p>
+            <button class="btn btn-primary" onclick="showSection('new-invoice')">Pehla Invoice Banao</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PRODUCTS ===== -->
+    <section class="section hidden" id="section-products">
+      <div class="card">
+        <div class="card-header">
+          <h2>Products / Items</h2>
+          <button class="btn btn-primary" onclick="openProductModal()">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            Add Product
+          </button>
+        </div>
+        <div id="product-list-container">
+          <div class="empty-state">
+            <div class="empty-icon">📦</div>
+            <p>Koi product add nahi kiya abhi tak</p>
+            <button class="btn btn-primary" onclick="openProductModal()">Pehla Product Add Karein</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CUSTOMERS ===== -->
+    <section class="section hidden" id="section-customers">
+      <div class="card">
+        <div class="card-header">
+          <h2>Customers</h2>
+          <button class="btn btn-primary" onclick="openCustomerModal()">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+            Add Customer
+          </button>
+        </div>
+        <div id="customer-list-container">
+          <div class="empty-state">
+            <div class="empty-icon">👥</div>
+            <p>Koi customer record nahi hai abhi tak</p>
+            <button class="btn btn-primary" onclick="openCustomerModal()">Pehla Customer Add Karein</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay hidden" id="product-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="product-modal-title">Add Product</h3>
+      <button class="modal-close" onclick="closeProductModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="product-edit-index" value="-1" />
+      <div class="form-group"><label>Product Name *</label><input type="text" id="p-name" placeholder="Product ka naam" /></div>
+      <div class="form-grid2">
+        <div class="form-group"><label>Price (Rs.) *</label><input type="number" id="p-price" placeholder="0.00" min="0" step="0.01" /></div>
+        <div class="form-group"><label>Unit</label><select id="p-unit"><option>Piece</option><option>Kg</option><option>Gram</option><option>Litre</option><option>Box</option><option>Dozen</option><option>Meter</option><option>Other</option></select></div>
+      </div>
+      <div class="form-group"><label>Category</label><input type="text" id="p-category" placeholder="Category (optional)" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeProductModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveProduct()">Save Product</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="customer-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="customer-modal-title">Add Customer</h3>
+      <button class="modal-close" onclick="closeCustomerModal()">X</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="customer-edit-index" value="-1" />
+      <div class="form-group"><label>Customer Name *</label><input type="text" id="c-name" placeholder="Customer ka naam" /></div>
+      <div class="form-grid2">
+        <div class="form-group"><label>Phone</label><input type="tel" id="c-phone" placeholder="Mobile number" /></div>
+        <div class="form-group"><label>City</label><input type="text" id="c-city" placeholder="City" /></div>
+      </div>
+      <div class="form-group"><label>Address</label><textarea id="c-address" rows="2" placeholder="Address (optional)"></textarea></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeCustomerModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCustomer()">Save Customer</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="shop-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Shop Settings</h3>
+      <button class="modal-close" onclick="closeShopSettings()">X</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Shop Name *</label><input type="text" id="s-name" placeholder="Apni dukan ka naam" /></div>
+      <div class="form-group"><label>Owner Name</label><input type="text" id="s-owner" placeholder="Malik ka naam" /></div>
+      <div class="form-group"><label>Phone</label><input type="tel" id="s-phone" placeholder="Contact number" /></div>
+      <div class="form-group"><label>Address</label><textarea id="s-address" rows="2" placeholder="Dukan ka pata"></textarea></div>
+      <div class="form-group"><label>GST Number (optional)</label><input type="text" id="s-gst" placeholder="GST number" /></div>
+      <div class="form-group"><label>Invoice Footer Message</label><input type="text" id="s-footer" placeholder="e.g. Shukriya! Phir tashreef layen" /></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeShopSettings()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveShopSettings()">Save Settings</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay hidden" id="view-invoice-modal">
+  <div class="modal modal-large">
+    <div class="modal-header">
+      <h3>Invoice Details</h3>
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-secondary" onclick="printSavedInvoice()">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v8H6v-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          Print
+        </button>
+        <button class="modal-close" onclick="closeViewInvoice()">X</button>
+      </div>
+    </div>
+    <div class="modal-body" id="view-invoice-content"></div>
+  </div>
+</div>
+
+<div class="toast hidden" id="toast"></div>
+<iframe id="print-frame" style="display:none"></iframe>
+<script src="app.js"></script>
+</body>
+</html>
